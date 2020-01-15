@@ -5,14 +5,14 @@
 docker run \
     --name postgres \                 ## nome do serviço docker imagem
     -e POSTGRES_USER=junior \         ## cria variavel de ambiente para configura use do banco
-    -e POSTGRES_PASSWORD=Bwi280281* \ ## cria variavel de ambiente para configura senha do banco
+    -e POSTGRES_PASSWORD=Bwi280281 \  ## cria variavel de ambiente para configura senha do banco
     -e POSTGRES_DB=heroes \           ## cria variavel de ambiente para configura nome  do banco
     -p 5432:5432 \                    ## configura a porta inter:externa(expoe)
     -d \                              ## coloca para roda em segundo plano  
     postgres                          ## Passa o nome da imagem para baixar                  
 
     docker ps                         ##  lista o que esta rodando no docker(processos)
-    docker exec -it postgre/bin/bash  ## entra na bash do container imagem postgres para rodar comandos
+    docker exec -it postgre /bin/bash  ## entra na bash do container imagem postgres para rodar comandos
 
     ## rode o "psql" na bash para verificarse está funcionando - No minimo deve dizer que o o usuario "root" nao existe
 
@@ -28,7 +28,7 @@ docker run \
                                         ## selecione o tipo de banco, no caso o postgre
                                         ## server : nome do serviço (ex: postgres)  
                                         ## user:  junior(definida na outra imagen que esta rodando)    
-                                        ## password: Bwi280281*(definida na outra imagen que esta rodando)
+                                        ## password: Bwi280281 (definida na outra imagen que esta rodando)
                                         ## base de dado: heroes(nome do banco de dado definido anterior mente)
                                         ## -Logar
 
@@ -64,12 +64,12 @@ docker run \
                                         ## Selecione a connection -> click em Connect
 ## --Criar usuario de acesso a usuario
 
-docker -it mongodb \
+docker exec -it mongodb \
     mongo --host localhost -u admin -p admin --authenticationDatabase admin \ ## logue no mongo db
-    --eval "db.db.getSiblingDB('heroi').createUser((user:'junior', pwd: 'Bwi280281*', rules: [{role: 'readwrite', db: herois}])) " \ 
+    --eval "db.getSiblingDB('heroi').createUser({user:'junior', pwd: 'Bwi280281', roles: [{role: 'readWrite', db: 'herois'}]})" \ 
                                         ## exeutar o eval para que o eval rode um comando dentro do mongo
                                         ## "db.db.getSiblingDB('heroi')" criando o BD
-                                        ## .createUser((user:'junior', pwd: 'Bwi280281*',, rules: [{role: 'readwrite', db: herois}])) criando usuario de aplicação com permissão de leitura e escrita na tabela herois
+                                        ## .createUser({user:'junior', pwd: 'Bwi280281*',, rules: [{role: 'readwrite', db: herois}]}) criando usuario de aplicação com permissão de leitura e escrita na tabela herois
 ## --rode o comando acima e verifique se foi crado o usuario
 
 
