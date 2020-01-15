@@ -70,4 +70,7 @@ docker -it mongodb \
                                         ## exeutar o eval para que o eval rode um comando dentro do mongo
                                         ## "db.db.getSiblingDB('heroi')" criando o BD
                                         ## .createUser((user:'junior', pwd: 'Bwi280281*',, rules: [{role: 'readwrite', db: herois}])) criando usuario de aplicação com permissão de leitura e escrita na tabela herois
+## --rode o comando acima e verifique se foi crado o usuario
+
+
 
