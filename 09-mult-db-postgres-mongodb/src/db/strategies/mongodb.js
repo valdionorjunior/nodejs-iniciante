@@ -50,7 +50,7 @@ class MongoBD  extends ICrud{
 		//abrindo a concecxao com o banco
 
 		Mongoose.connect('mongodb://junior:Bwi280281@localhost:27017/herois' //pasamos o container://usuario:senha@host:porta/db
-		,{useNewUrlParser: true}, function (error){//na função validamos se deu problema
+		,{useNewUrlParser: true, useUnifiedTopology: true}, function (error){//na função validamos se deu problema
 			if(!error) return
 
 			console.log('Falha ao conectar com o Mongo', error)
@@ -62,6 +62,7 @@ class MongoBD  extends ICrud{
 
 		//evento de esta aberta
 		connection.once('open', () => console.log('Database: Mongo Rodando!'))
+		this.defineModel()
 
 	}
 
@@ -84,20 +85,20 @@ class MongoBD  extends ICrud{
 		this._herois = Mongoose.model('herois', heroisSchema)
 	}
 
-	async create(item){
-		return await model.create(item)
+	create(item){
+		return  this._herois.create(item)
 	}
 
-	async read(query){
-		console.log('Leitura no MongoDB')
+	read(item, skip=0, limit=10){ // fazemos a leitura, também com paginação se não passar o skip, fica na primeira posção, limit de pra mostrar 10 itens
+		return  this._herois.find(item).skip(skip).limit(limit)
 	}
 
-	async update(id, item){
-		console.log('Item atualizado no MongoDB')
+	update(id, item){
+		return  this._herois.updateOne({_id: id}, {$set: item})//set par aalterar somente o que vc quer, sem sobrepor o resto
 	}
 
-	async delete(id){
-		console.log('Item deletado do MongoDB')
+	delete(id){
+		return this._herois.deleteOne({_id: id}) // no mongo ao remover, a resposta é a quantidade de item removidos
 	}
 }
 
