@@ -22,7 +22,7 @@ const MOCK_HEROI_DELETAR = {
     poder: 'Intagible'
 }
 
-describe('- Postgres Strategi - banco Postgres -',function (){
+describe('- Postgres Strategy - banco Postgres -',function (){
     this.timeout(Infinity)// pode demorar o tempo de for pra conectar, sem time out
 
     this.beforeAll(async function () {

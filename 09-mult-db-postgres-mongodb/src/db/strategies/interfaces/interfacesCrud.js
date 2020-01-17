@@ -21,7 +21,16 @@ class ICrud { // simulando uma interface
 		throw new NotImplementedException()
 	}
 
+	defineModel(){
+		throw new NotImplementedException()
+	}
+
 	isConnected(){
+		throw new NotImplementedException()
+	}
+
+	connect(){
+		/**TODO: Conexao com o bando de dados */
 		throw new NotImplementedException()
 	}
 }
