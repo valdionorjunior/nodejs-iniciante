@@ -97,7 +97,7 @@ describe('Swite de Teste Api', async function (){
         assert.deepEqual(statusCode, 200)// garantindo que a resposta está correta
     })
 
-    it('Cadastrar POST -> /herois - > ', async () => {
+    it('Cadastrar POST -> /herois -> ', async () => {
         
         const result = await app.inject({
             method: 'POST',
@@ -145,10 +145,80 @@ describe('Swite de Teste Api', async function (){
         })
 
         const statusCode = result.statusCode
+        // const {message} = JSON.parse(result.payload)
+        const data = JSON.parse(result.payload)
+        const esperado = {
+            statusCode: 404,
+            error: 'Not Found',
+            message: 'HeroRoutes - update() -> ID não encontrado no banco, '
+          }
+
+        assert.ok(statusCode === 404) // === compara alem do valor, o tipo também, pois posso ter '200' como string com parado a 200 Number
+
+        assert.deepEqual(data, esperado)
+    })
+
+    it('Deletar DELETE -> /herois/:id', async () => {
+
+        // const _id = '5e26d876c78fb913d56c707d'deletado { n: 0, ok: 1, deletedCount: 0 }
+        const _id = MOCK_ID
+
+        const result = await app.inject({
+            method: 'DELETE',
+            url: `/herois/${_id}`
+        })
+
+        const statusCode = result.statusCode
         const {message} = JSON.parse(result.payload)
 
         assert.ok(statusCode === 200) // === compara alem do valor, o tipo também, pois posso ter '200' como string com parado a 200 Number
 
-        assert.deepEqual(message, "Não foi possivel realizar a alteração do personagem!")
+        assert.deepEqual(message, "Heroi deletado com sucesso!")
+    })
+
+    it('Error Deletar DELETE -> /herois/:id - Não deleta, id incorreto', async () => {
+
+        const _id = '5e26d876c78fb913d56c707d'//id valido contudo ja não existente no banco
+
+        const result = await app.inject({
+            method: 'DELETE',
+            url: `/herois/${_id}`
+        })
+
+        const statusCode = result.statusCode
+        // const {message} = JSON.parse(result.payload)
+        const data = JSON.parse(result.payload)
+        const esperado = {
+            statusCode: 404,
+            error: 'Not Found',
+            message: 'HeroRoutes - delete() -> ID não encontrado no banco, '
+          }
+
+        assert.ok(statusCode === 404) // === compara alem do valor, o tipo também, pois posso ter '200' como string com parado a 200 Number
+
+        assert.deepEqual(data, esperado)
+    })
+
+    it('Error Deletar DELETE -> /herois/:id - Não deleta, id invalido', async () => {
+
+        const _id = 1010//id valido contudo ja não existente no banco
+
+        const result = await app.inject({
+            method: 'DELETE',
+            url: `/herois/${_id}`
+        })
+
+        const statusCode = result.statusCode
+        // const {message} = JSON.parse(result.payload)
+        const data = JSON.parse(result.payload)
+        const esperado = {
+            error: 'Internal Server Error',
+            message: 'An internal server error occurred',
+            statusCode: 500
+          }
+
+        assert.ok(statusCode === 500) // === compara alem do valor, o tipo também, pois posso ter '200' como string com parado a 200 Number
+
+        assert.deepEqual(data, esperado)
     })
 })
